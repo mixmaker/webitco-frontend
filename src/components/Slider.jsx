@@ -15,6 +15,11 @@ const Slider = () => {
       setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
     }
   };
+  // useEffect(() => {
+    setTimeout(() => {
+      handleClick("right");
+    }, 7000);
+  // }, []);
 
   return (
     <Container>
@@ -32,7 +37,7 @@ const Slider = () => {
                 <h1 className="title">{item.title}</h1>
                 <p className="desc">{item.desc}</p>
                 <button
-                  onClick={() => navigationtoproducts("/products/category")}
+                  onClick={() => navigationtoproducts("/products/all")}
                 >
                   SHOP NOW
                 </button>

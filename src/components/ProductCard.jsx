@@ -7,75 +7,69 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Product = ({ item }) => {
+const ProductCard = ({ item }) => {
   return (
-    <Container>
-      <Circle />
-      <img src={item.image} alt="" />
-      <Link to={"/product/id"}>
-        <Info>
-          <div className="icon">
-            <ShoppingCartOutlined />
-          </div>
-          <div className="icon">
-            <SearchOutlined />
-          </div>
-          <div className="icon">
-            <FavoriteBorderOutlined />
-          </div>
-        </Info>
+    <Box>
+      <Link to={`/product/${item.id}`} style={{ textDecoration: "none" }}>
+        <Container>
+          {/* <Circle /> */}
+          <img src={item.image} alt={item.title} />
+        </Container>
       </Link>
-    </Container>
+      <TextStyle>
+        <div>{item.title.substring(0,55)}</div>
+        <div className="price">${item.price}</div>
+      </TextStyle>
+    </Box>
   );
 };
-
-const Info = styled.div`
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all.5s ease;
-  .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: white;
-    margin: 10px;
-    transition: all 0.5s ease;
-    cursor: pointer;
-    &:hover {
-      background-color: #e9f5f5;
-      transform: scale(1.1);
-    }
-  }
-`;
 const Container = styled.div`
   flex: 1;
+  flex-direction: column;
   margin: 5px;
-  min-height: 280px;
+  min-height: 350px;
   min-width: 250px;
+  max-width: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f5fbfd;
   position: relative;
-  &:hover ${Info} {
-    opacity: 1;
-  }
+  transition: all 0.5s;
+  /* &:hover {
+    transform: translate(-3rem, -3rem);
+  } */
   img {
     z-index: 2;
     width: 60%;
     /* height: 80%; */
+  }
+`;
+const Box = styled.div`
+  position: relative;
+  &:hover ${Container} {
+    transform: translate(-3.5rem, -3.5rem);
+  }
+`;
+const TextStyle = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #111;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  /* opacity: 0; */
+  color: #fff;
+  margin: 10px;
+  padding: 0.5rem 1rem;
+  transition: all 0.5s ease;
+  z-index: -1;
+  cursor: pointer;
+  .price {
+    font-size: 1.1rem;
   }
 `;
 const Circle = styled.div`
@@ -85,4 +79,4 @@ const Circle = styled.div`
   border-radius: 50%;
   background-color: white;
 `;
-export default Product;
+export default ProductCard;

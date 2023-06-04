@@ -1,28 +1,46 @@
 import { Add, Remove } from "@material-ui/icons";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { useLocation } from "react-router";
+import { getProductfromId } from "../api";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
+import useStore from "../contexts/useStore";
 
-const Product = () => {
+const ProductPage = () => {
+  const location = useLocation();
+  const productId = location.pathname.split("/")[2];
+
+  const { currentProduct, setCurrentProduct, setIsLoading } = useStore();
+  const fetchProductData = async () => {
+    try {
+      const data = await getProductfromId(productId);
+      setCurrentProduct(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchProductData();
+    return () => setCurrentProduct(undefined);
+  }, []);
+
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
         <div className="imgContainer">
-          <img src="https://i.ibb.co/S6qMxwr/jean.jpg" alt="" />
+          {/* <img src="https://i.ibb.co/S6qMxwr/jean.jpg" alt="" /> */}
+          <img src={currentProduct?.image} alt={currentProduct?.title} />
         </div>
         <div className="infoContainer">
-          <h1 className="title">Denim Jumpsuit</h1>
-          <p className="desc">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
-            odit facilis necessitatibus blanditiis doloribus tempore ullam.
-            Praesentium eius enim earum.
-          </p>
-          <span className="price">$20</span>
+          <h1 className="title">{currentProduct?.title}</h1>
+          <p className="desc">{currentProduct?.description}</p>
+          <span className="price">${currentProduct?.price}</span>
           <FilterContainer>
             <div className="filter">
               <span className="filterTitle">Color</span>
@@ -56,20 +74,22 @@ const Product = () => {
     </Container>
   );
 };
+export default ProductPage;
+
 const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
   .imgContainer {
-    flex: 1;
+    flex: 0.6;
     img {
       width: 100%;
       height: 90vh;
-      object-fit: cover;
+      object-fit: contain;
     }
   }
   .infoContainer {
-    flex: 1;
+    flex: 0.4;
     padding: 0 50px;
     h1 {
       font-weight: 200;
@@ -101,13 +121,13 @@ const Wrapper = styled.div`
           margin: 0 5px;
         }
       }
-      button{
+      button {
         padding: 15px;
         font-weight: 500;
         border: 2px solid teal;
         background-color: white;
         cursor: pointer;
-        &:hover{
+        &:hover {
           background-color: #f8f4f4;
         }
       }
@@ -140,4 +160,3 @@ const FilterColor = styled.div`
   margin: 0 5px;
   cursor: pointer;
 `;
-export default Product;

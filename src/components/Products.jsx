@@ -1,28 +1,18 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import useStore from "../contexts/useStore";
-import { getPopularProducts } from "../data";
-import Product from "./ProductCard";
+import { getPopularProducts } from "../api";
+import ProductCard from "./ProductCard";
 
-const Products = () => {
-  const { popularProducts, setPopularProducts, setIsLoading } = useStore();
-  const dataFetcher = async () => {
-    try {
-      const data = await getPopularProducts();
-      setPopularProducts(data);
-      setIsLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    dataFetcher();
-  }, []);
-
+const Products = ({ title, data }) => {
   return (
     <Container>
-      {popularProducts &&
-        popularProducts.map((item) => <Product item={item} key={item.id} />)}
+      <h1 className="heading">{title}</h1>
+      <div className="items">
+        {data?.map((item) => (
+          <ProductCard item={item} key={item.id} />
+        ))}
+      </div>
     </Container>
   );
 };
@@ -30,7 +20,16 @@ const Products = () => {
 const Container = styled.div`
   padding: 20px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
+  .heading {
+    font-size: 24px;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+  }
+  .items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 `;
 export default Products;

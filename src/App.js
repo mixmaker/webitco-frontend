@@ -5,7 +5,7 @@ import useStore from "./contexts/useStore";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Product from "./pages/Product";
+import ProductPage from "./pages/ProductPage";
 import Productlist from "./pages/Productlist";
 import Register from "./pages/Register";
 import { useLocation } from "react-router";
@@ -22,10 +22,11 @@ function App() {
   const locationForloading = useLocation();
   useEffect(() => {
     setIsLoading(true);
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
+    // eslint-disable-next-line
   }, [locationForloading]);
 
   return (
@@ -41,7 +42,7 @@ function App() {
             alignItems: "center",
             justifyContent: "center",
             zIndex: 100,
-            background: "rgba(0,0,0,0.9)",
+            background: "rgba(0,0,0,0.99)",
           }}
         >
           <Spinner name="folding-cube" color="wheat" fadeIn="none" />
@@ -50,7 +51,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} exact />
         <Route path="/products/:category" element={<Productlist />} />
-        <Route path="/product/:id" element={<Product />} />
+        <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
         <Route
